@@ -5,6 +5,7 @@ import General from "./general.js";
 class Light extends General {
     constructor() {
         super();
+        this.notificationTimer = null; // Store timer ID for clearing
     }
 
     notification(message) {
@@ -19,13 +20,38 @@ class Light extends General {
     }
 
     displayNotification(message, position, container) {
+        // Check for existing notification
+        const existingNotification = container.querySelector('.notification');
+        if (existingNotification) {
+            // Update existing notification
+            const messageElement = existingNotification.querySelector('p');
+            if (messageElement) {
+                messageElement.textContent = message;
+            }
+            // Clear existing timer
+            if (this.notificationTimer) {
+                clearTimeout(this.notificationTimer);
+            }
+            // Restart removal timer
+            this.notificationTimer = setTimeout(() => {
+                existingNotification.remove();
+                this.notificationTimer = null;
+            }, 5000);
+            return;
+        }
+
+        // Create new notification
         const html = this.notification(message);
         this.renderHTML(html, position, container);
         const notificationElement = container.querySelector('.notification:last-child');
-        this.removeNotification(notificationElement);
+        this.notificationTimer = setTimeout(() => {
+            notificationElement.remove();
+            this.notificationTimer = null;
+        }, 5000);
     }
 
     removeNotification(element) {
+        // No longer used directly, but kept for compatibility
         setTimeout(() => {
             element.remove();
         }, 5000);
