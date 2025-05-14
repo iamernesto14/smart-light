@@ -1,4 +1,5 @@
-'use script'
+'use strict';
+
 // elements declarations
 const homepageButton = document.querySelector('.entry_point');
 const homepage = document.querySelector('main');
@@ -29,8 +30,7 @@ homepageButton.addEventListener('click', function(e) {
         lightController.removeHidden(mainRoomsContainer);
         lightController.removeHidden(nav);
     }, 1000);
-})
-
+});
 
 mainRoomsContainer.addEventListener('click', (e) => {
     const selectedElement = e.target;
@@ -49,20 +49,25 @@ mainRoomsContainer.addEventListener('click', (e) => {
     }
 });
 
-mainRoomsContainer.addEventListener('change', (e) => {
-    const slider = e.target;
-    const value = slider.value;
-
-    lightController.handleLightIntensitySlider(slider, value);
-    
-})
+mainRoomsContainer.addEventListener('input', (e) => {
+    const sliders = e.target;
+    if (sliders.matches('#light_intensity')) {
+        if (!isWifiActive) {
+            const notificationContainer = document.querySelector('body');
+            lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to adjust lights.', 'beforeend', notificationContainer);
+            return;
+        }
+        const value = parseInt(sliders.value, 10);
+        lightController.handleLightIntensitySlider(sliders, value);
+    }
+});
 
 // advance settings modal
 advanceFeaturesContainer.addEventListener('click', (e) => {
     const selectedElement = e.target;
 
     if (selectedElement.closest('.close-btn')) {
-       advancedSettings.closeModalPopUp()
+       advancedSettings.closeModalPopUp();
     }
 
     // display customization markup
@@ -89,4 +94,3 @@ advanceFeaturesContainer.addEventListener('click', (e) => {
         }
     }
 });
-

@@ -1,12 +1,12 @@
 class General {
     componentsData = {
         hall: { name: 'hall', lightIntensity: 5, numOfLights: 6, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [22, 11, 12, 10, 12, 17, 22] }, 
-        bedroom: { name: 'bedroom', lightIntensity: 5,  numOfLights: 3, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [18, 5, 7, 5, 6, 6, 18] },
-        bathroom: { name: 'bathroom', lightIntensity: 5,  numOfLights: 1, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [2, 1, 1, 1, 1, 3, 3] },
-        ['outdoor lights']: { name: 'outdoor lights', lightIntensity: 5,  numOfLights: 6, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [15, 12, 13, 9, 12, 13, 18] },
-        ['guest room']: { name: 'guest room', lightIntensity: 5,  numOfLights: 4, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 10, 3, 9, 5, 5, 18] },
-        kitchen: { name: 'kitchen', lightIntensity: 5,  numOfLights: 3, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 19, 13, 11, 12, 13, 18] },
-        [['walkway & corridor']]: { name: 'walkway & corridor', lightIntensity: 5,  numOfLights: 8, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 19, 13, 15, 22, 23, 18] },
+        bedroom: { name: 'bedroom', lightIntensity: 5, numOfLights: 3, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [18, 5, 7, 5, 6, 6, 18] },
+        bathroom: { name: 'bathroom', lightIntensity: 5, numOfLights: 1, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [2, 1, 1, 1, 1, 3, 3] },
+        ['outdoor lights']: { name: 'outdoor lights', lightIntensity: 5, numOfLights: 6, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [15, 12, 13, 9, 12, 13, 18] },
+        ['guest room']: { name: 'guest room', lightIntensity: 5, numOfLights: 4, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 10, 3, 9, 5, 5, 18] },
+        kitchen: { name: 'kitchen', lightIntensity: 5, numOfLights: 3, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 19, 13, 11, 12, 13, 18] },
+        ['walkway & corridor']: { name: 'walkway & corridor', lightIntensity: 5, numOfLights: 8, isLightOn: false, autoOn: '06:30', autoOff: '22:00', usage: [12, 19, 13, 15, 22, 23, 18] },
     }
 
     wifiConnections = [
@@ -16,7 +16,7 @@ class General {
         {id: 3, wifiName: 'virus', signal: 'good'},
     ]
 
-    constructor () {
+    constructor() {
         this.isLightOn = false;
         this.lightIntensity = 5;
     }
@@ -30,8 +30,8 @@ class General {
     }
 
     getSelectedComponentName(element, ancestorIdentifier='.rooms', elementSelector='p') {
-        const selectedElement = this.closestSelector(element, ancestorIdentifier, elementSelector);
-        const name = selectedElement.textContent.toLowerCase();
+        const selectedlimination = this.closestSelector(element, ancestorIdentifier, elementSelector);
+        const name = selectedlimination.textContent.toLowerCase();
         return name;
     }
 
@@ -41,25 +41,24 @@ class General {
         return data;
     }
 
-    renderHTML (element, position, container) {
+    renderHTML(element, position, container) {
         container.insertAdjacentHTML(position, element);
     }
 
-    notification (message) {
+    notification(message) {
         return `
             <div class="notification">
                 <p>${message}</p>
             </div>
         `;
-
     }
 
-    displayNotification (message, position, container) {
+    displayNotification(message, position, container) {
         const html = this.notification(message);
         this.renderHTML(html, position, container);
     }
 
-    removeNotification (element) {
+    removeNotification(element) {
         setTimeout(() => {
             element.remove();
         }, 2000);
@@ -75,11 +74,13 @@ class General {
     }
 
     handleLightIntensity(element, lightIntensity) {
-        element.style.filter = `brightness(${lightIntensity})`;
+        if (typeof lightIntensity !== 'number' || isNaN(lightIntensity)) return;
+        const boundedIntensity = Math.max(0, Math.min(1, lightIntensity));
+        element.style.filter = `brightness(${boundedIntensity})`;
     }
 
     updateComponentData(data) {
-        this.componentsData
+        this.componentsData = data;
     }
 
     updateMarkupValue(element, value) {
@@ -93,6 +94,7 @@ class General {
     removeHidden(element) {
         element.classList.remove('hidden');
     }
+
     addHidden(element) {
         element.classList.add('hidden');
     }
@@ -106,7 +108,6 @@ class General {
             parent = this.selector(`.${elementClassName}`);
         } else if (roomData.name === 'outdoor lights') {
             parent = this.selector('.outside_lights');
-
         } else {
             parent = this.selector(`.${roomData.name}`);
         }
@@ -125,4 +126,4 @@ class General {
     }
 }
 
-export default General
+export default General;
