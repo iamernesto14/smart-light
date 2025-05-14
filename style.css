@@ -1,0 +1,585 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* reset webpage default styles */
+* {margin: 0; padding: 0; box-sizing: border-box;}
+
+:root {
+    /* colors */
+    --white-color: #fff;
+    --light-on: #ffd600;
+}
+
+body {
+    width: 100%;
+    height: 100dvh;
+
+    color: var(--white-color);
+    font-size: 16px;
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    background: #ccc;
+    overflow: hidden; /* remove if it's causing issues*/
+}
+
+nav {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 20px;
+    padding: 0 2rem;
+
+    background: #004
+}
+nav > *:not(nav > section:last-child) {
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50px;
+}
+nav > :last-child {
+    cursor: default;
+}
+
+main {
+    width: inherit;
+    height: inherit;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+
+    background: #000;
+}
+
+h1 {
+    /* position: relative;
+        left: -300px; */
+    
+    text-align: center;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    letter-spacing: 5px;
+    font-size: 3rem;
+    overflow: hidden;
+}
+h1 span:first-child {
+    position: relative;
+    left: -510px;
+    animation: left_slide-in 900ms 1s ease-in-out forwards;
+}
+
+.entry_point {
+    width: min(500px, 100%);
+    height: max(100px, 200px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    
+    border: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+.entry_point img {
+    width: 100px;
+    aspect-ratio: 1;
+}
+.entry_point p {
+    font-size: clamp(18px, 5vw, 25px);
+    font-weight: 600;
+    /* opacity: 0; */
+    /* animation: fadeIn 900ms 1s 2s ease-in-out forwards; */
+    /* animation: fadeIn 1s 900ms 2s ease-in forwards; */
+
+}
+.entry_point > :first-child,
+.entry_point:hover > :nth-child(2) {
+    display: none;
+}
+.entry_point:hover > :first-child {
+    display: block;
+    filter: drop-shadow(2px 2px 35px var(--light-on));
+}
+
+/* using flex box to form grid layout */
+.application_container {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    overflow: hidden;
+}
+.flex1,
+.flex2,
+.flex3 {
+    width: 100%;
+    display: flex;
+
+    gap: 20px;
+}
+.flex1,
+.flex2 {
+    flex: 1;
+}
+.flex3 {
+    flex-basis: 100px;
+}
+
+.rooms {
+    height: 100%;
+    position: relative;
+    /* background-color: #ffd600; */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    
+    font-size: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+    text-transform: capitalize; 
+    flex: 1;
+    /* cursor: pointer; */
+    overflow: hidden; /* remove if necessary*/
+}
+.rooms > p {
+    letter-spacing: 4px;
+    font-weight: 500;
+}
+.rooms > img {
+    object-fit: cover;
+    position: absolute;
+    z-index: -1;
+    /* opacity: .1; */
+    filter: brightness(0.0);
+
+}
+.main_hall, .hall {
+    flex-basis: 500px;
+}
+/* .main_hall::after {
+    background: url(./assets/imgs/hall.jpg) no-repeat;
+} */
+
+.bedroom {
+    flex-basis: 200px;
+}
+/* .bedroom::after {
+    background: url(./assets/imgs/guest_room.jpg) no-repeat;
+} */
+
+.guest_room {
+    flex-basis: 400px;
+}
+/* .guest_room::after {
+    background: url(./assets/imgs/guest_room.jpg) no-repeat;
+} */
+.kitchen, .bathroom, .outside_lights {
+    flex-basis: 300px;
+}
+/* .kitchen::after {
+    background: url(./assets/imgs/kitchen.jpg) no-repeat;
+}
+.bathroom::after {
+    background: url(./assets/imgs/bathroom.jpg) no-repeat;
+}
+.outside_lights::after {
+    background: url(./assets/imgs/outside.jpg) no-repeat;
+}
+
+.corridor::after {
+    background: url(./assets/imgs/walkway.jpg) no-repeat;
+} */
+.rooms::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: brightness(.2);
+    /* opacity: 0.7; */
+
+    background-size: cover;
+    background-position: center;
+}
+.rooms:hover .rooms::after { /*not working check it later */
+    transform: scale(1.1);
+    transition: all 800ms ease-in-out;
+}
+/* .rooms:active {
+    transform: scale(2);
+    opacity: 0.1;
+    width: 100%;
+    height: 100dvh;
+    position: absolute;
+    top: 0;
+    transition: all 800ms ease-in-out;
+} */
+.slider {
+    width: 200px;
+    height: fit-content;
+    /* height: 10px; */
+
+    /* border: none;
+    border-radius: 10px;
+    background: linear-gradient(45deg, black 50%, white 45%); */
+}
+.slider input {
+    width: 100%;
+    height: 100%;
+}
+.basic_settings {
+    width: min(300px, 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.basic_settings_buttons {
+    display: flex;
+    gap: 5px;
+}
+.basic_settings_buttons button {
+    width: 30px;
+    height: 30px;
+}
+.basic_settings_buttons button img {
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+/* ADVANCED FEATURES */
+.advanced_features_container {
+    backdrop-filter: brightness(0.4);
+    background-color: #111a;
+    position: absolute;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.advanced_features {
+    width: min(500px, 100%);
+    height: 80dvh;
+    background: var(--white-color);
+    background: #ddd;
+    color: #111;
+    position: relative;
+
+    border: none;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #333;
+
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+h3 {
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    margin: 1rem 0;
+    letter-spacing: 2px;
+}
+.component_summary {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.component_summary > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.component_summary div > p {
+    letter-spacing: 3px;
+    font-weight: 300;
+
+}
+.component_summary div:first-child > p:last-child {
+    font-weight: 500;
+    font-size: 4rem;
+}
+.auto_off span:last-child,
+.auto_on span:last-child {
+    font-weight: 600;
+}
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    
+    width: 20px;
+    height: 20px;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.customization {
+    width: 100%;
+    height: fit-content;
+    padding: 2rem;
+
+}
+.edit {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.edit img {
+    width: 30px;
+    aspect-ratio: 1;
+}
+h4 {
+    font-size: .8rem;
+}
+.defaultOn,
+.defaultOff {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: .5rem 0 0 0;
+}
+.customization-details label {
+    width: 60px;
+}
+.defaultOff input,
+.defaultOn input {
+    border: none;
+    outline: none;
+    background: transparent;
+}
+.defaultOff input:focus-visible,
+.defaultOn input:focus-visible {
+    border: none;
+}
+.defaultOff button:first-child,
+.defaultOn button:first-child {
+    margin-right: 10px;
+    background: #0a0
+}
+.defaultOff button:last-child,
+.defaultOn button:last-child {
+    background: #a00
+}
+.customization-details button {
+    padding: 0.3rem;
+    color: var(--white-color);
+    border: none;
+    border-radius: 4px;
+}
+
+.img_svg-container {
+    width: 30px;
+    display: flex;
+}
+.wifi-container {
+    position: fixed;
+    width: fit-content;
+    right: 20px;
+    bottom: 20px;
+    border-radius: 20px;
+    border: 3px solid #00a3;
+    background: #00a;
+    overflow: hidden;
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.wifi_notification {
+    width: 100%;
+
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+
+}
+.wifi_connection_list_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    /* padding: 1rem; */
+    gap: 10px;
+}
+.wifi_connections_list {
+    padding: .4rem 1rem;
+    font-weight: 500;
+
+    display: flex;
+    justify-content: space-between;
+    
+}
+.wifi_connections_list > img {
+    width: 20px;
+    aspect-ratio: 1;
+
+}
+
+/* .wifi-container:hover p {
+    display: block;
+} */
+.wifi_connection_list_container p:hover {
+    background: #018;
+    
+}
+
+
+
+
+
+
+/* GENERAL ELEMENT STYLES */
+img {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1;
+}
+button {
+    cursor: pointer;
+    border: none;
+    color: var(--white-color);
+    background: transparent;
+}
+
+
+
+/* DYNAMIC ELEMENT RENDERING */
+.notification {
+    width: fit-content;
+    max-width: 400px;
+    height: fit-content;
+    min-height: 40px;
+    margin: 1rem;
+    padding: 0.4rem 0.6rem;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    text-align: center;
+    font-size: 1rem;
+    color: #aaa;
+    border: none;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+
+    box-shadow: 2px 2px 5px 1px var(--white-color);
+    background-color: var(--white-color);
+}
+.notification :first-child {
+    width: 20px;
+    display: flex;
+    align-items: center;
+}
+
+
+
+
+
+
+
+/* ANIMATIONS */
+@keyframes left_slide-in {
+    0% {
+        /* position: relative;
+        left: -300px; */
+        opacity: 0.1;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        left: 0;
+        opacity: 1;
+    }
+}
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* loading effect */
+.loader-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    background-color: #000;
+  }
+  
+  .loader {
+    margin: auto;
+    width: 50px;
+    height: 50px;
+    background-color: #009;
+    animation: spin 2s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+  }
+  
+  @keyframes spin {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      transform: scale(0.5) rotate(180deg);
+    }
+  }
+
+/* SPECIAL CLASSES / PSEUDO CLASSES / DYNAMIC ELEMENT CLASSES*/
+.hidden {
+    display: none;
+}
+.wifi-active {
+    background: #00a;
+}
+.wifi_connection_container {
+    width: 100%;
+    height: fit-content;
+}
+
+@media screen and (max-width: 780px) {
+    .application_container {
+        overflow: scroll;
+    }
+    .flex1, .flex2, .flex3 {
+        flex-direction: column;
+    }
+}
