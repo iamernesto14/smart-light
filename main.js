@@ -8,6 +8,7 @@ const advanceFeaturesContainer = document.querySelector('.advanced_features_cont
 const nav = document.querySelector('nav');
 const loader = document.querySelector('.loader-container');
 const generalLightSwitch = document.querySelector('.general-light-switch');
+const wifiToggle = document.querySelector('.wifi-toggle');
 
 // imports
 import Light from './js/basicSettings.js';
@@ -138,5 +139,25 @@ nav.addEventListener('click', (e) => {
                 lightController.displayNotification('All lights turned on', 'beforeend', document.querySelector('body'));
             }
         }
+    }
+
+    // Wi-Fi toggle
+    if (selectedElement.closest('.wifi-toggle')) {
+        const wifiImage = wifiToggle.querySelector('img');
+        isWifiActive = !isWifiActive;
+        window.isWifiActive = isWifiActive;
+        const wifiNotification = document.querySelector('.wifi_notification p');
+        if (isWifiActive) {
+            wifiImage.src = './assets/svgs/wifi.svg';
+            wifiImage.setAttribute('data-wifiOff', './assets/svgs/wifi-disconnected.svg');
+            wifiNotification.textContent = 'Wi-Fi is on';
+            lightController.displayNotification('Wi-Fi turned on', 'beforeend', document.querySelector('body'));
+        } else {
+            wifiImage.src = './assets/svgs/wifi-disconnected.svg';
+            wifiImage.setAttribute('data-wifiOff', './assets/svgs/wifi.svg');
+            wifiNotification.textContent = 'Wi-Fi is off';
+            lightController.displayNotification('Wi-Fi turned off', 'beforeend', document.querySelector('body'));
+        }
+        document.querySelector('.wifi_notification img').src = isWifiActive ? './assets/svgs/wifi.svg' : './assets/svgs/wifi-disconnected.svg';
     }
 });

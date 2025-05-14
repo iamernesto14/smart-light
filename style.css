@@ -37,7 +37,12 @@ nav > *:not(nav > section:last-child) {
     height: 30px;
     border: none;
     border-radius: 50px;
+    background: transparent;
 }
+nav > .wifi-toggle:hover, nav > .general-light-switch:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 nav > :last-child {
     cursor: default;
 }
