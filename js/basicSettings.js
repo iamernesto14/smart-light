@@ -20,27 +20,21 @@ class Light extends General {
     }
 
     displayNotification(message, position, container) {
-        // Check for existing notification
         const existingNotification = container.querySelector('.notification');
         if (existingNotification) {
-            // Update existing notification
             const messageElement = existingNotification.querySelector('p');
             if (messageElement) {
                 messageElement.textContent = message;
             }
-            // Clear existing timer
             if (this.notificationTimer) {
                 clearTimeout(this.notificationTimer);
             }
-            // Restart removal timer
             this.notificationTimer = setTimeout(() => {
                 existingNotification.remove();
                 this.notificationTimer = null;
             }, 5000);
             return;
         }
-
-        // Create new notification
         const html = this.notification(message);
         this.renderHTML(html, position, container);
         const notificationElement = container.querySelector('.notification:last-child');
@@ -51,7 +45,6 @@ class Light extends General {
     }
 
     removeNotification(element) {
-        // No longer used directly, but kept for compatibility
         setTimeout(() => {
             element.remove();
         }, 5000);
@@ -81,7 +74,6 @@ class Light extends General {
 
         if (!component || !childElement || !background || !slider) return;
 
-        // Check Wi-Fi for non-automated toggles
         if (!timeStr && !window.isWifiActive) {
             this.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle lights.', 'beforeend', document.querySelector('body'));
             return;
@@ -91,7 +83,6 @@ class Light extends General {
 
         if (component.isLightOn) {
             this.lightSwitchOn(childElement);
-            // Preserve last non-zero intensity, default to 5 if 0
             component.lightIntensity = component.lightIntensity > 0 ? component.lightIntensity : 5;
             const lightIntensity = component.lightIntensity / 10;
             this.handleLightIntensity(background, lightIntensity);
@@ -102,12 +93,40 @@ class Light extends General {
             slider.value = 0;
         }
 
-        // Display notification
-        const action = component.isLightOn ? 'turned on' : 'turned off';
-        const message = timeStr
-            ? `Light ${action} automatically in ${component.name} at ${timeStr}`
-            : `Light ${action} in ${component.name}`;
-        this.displayNotification(message, 'beforeend', document.querySelector('body'));
+        if (!timeStr) {
+            const action = component.isLightOn ? 'turned on' : 'turned off';
+            const message = `Light ${action} in ${component.name}`;
+            this.displayNotification(message, 'beforeend', document.querySelector('body'));
+        }
+    }
+
+    toggleAllLights(turnOn) {
+        const lightSwitches = document.querySelectorAll('.light-switch');
+        let anyLightWasOff = false;
+
+        lightSwitches.forEach(lightSwitch => {
+            const { componentData: component, childElement, background } = this.lightComponentSelectors(lightSwitch);
+            const slider = this.closestSelector(lightSwitch, '.rooms', '#light_intensity');
+            
+            if (!component || !childElement || !background || !slider) return;
+
+            if (turnOn && !component.isLightOn) {
+                component.isLightOn = true;
+                this.lightSwitchOn(childElement);
+                component.lightIntensity = component.lightIntensity > 0 ? component.lightIntensity : 5;
+                const lightIntensity = component.lightIntensity / 10;
+                this.handleLightIntensity(background, lightIntensity);
+                slider.value = component.lightIntensity;
+                anyLightWasOff = true;
+            } else if (!turnOn) {
+                component.isLightOn = false;
+                this.lightSwitchOff(childElement);
+                this.handleLightIntensity(background, 0);
+                slider.value = 0;
+            }
+        });
+
+        return anyLightWasOff;
     }
 
     handleLightIntensitySlider(element, intensity) {

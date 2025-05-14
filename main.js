@@ -7,6 +7,7 @@ const mainRoomsContainer = document.querySelector('.application_container');
 const advanceFeaturesContainer = document.querySelector('.advanced_features_container');
 const nav = document.querySelector('nav');
 const loader = document.querySelector('.loader-container');
+const generalLightSwitch = document.querySelector('.general-light-switch');
 
 // imports
 import Light from './js/basicSettings.js';
@@ -39,8 +40,7 @@ mainRoomsContainer.addEventListener('click', (e) => {
     // when click occurs on light switch
     if (selectedElement.closest(".light-switch")) {
         if (!isWifiActive) {
-            const notificationContainer = document.querySelector('body');
-            lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle lights.', 'beforeend', notificationContainer);
+            lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle lights.', 'beforeend', document.querySelector('body'));
             return;
         }
         const lightSwitch = selectedElement.closest(".basic_settings_buttons").firstElementChild;
@@ -59,15 +59,15 @@ mainRoomsContainer.addEventListener('click', (e) => {
 });
 
 mainRoomsContainer.addEventListener('input', (e) => {
-    const slider = e.target;
-    if (slider.matches('#light_intensity')) {
+    const sliders = e.target;
+    if (sliders.matches('#light_intensity')) {
         if (!isWifiActive) {
             const notificationContainer = document.querySelector('body');
             lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to adjust lights.', 'beforeend', notificationContainer);
             return;
         }
-        const value = parseInt(slider.value, 10);
-        lightController.handleLightIntensitySlider(slider, value);
+        const value = parseInt(sliders.value, 10);
+        lightController.handleLightIntensitySlider(sliders, value);
     }
 });
 
@@ -110,6 +110,33 @@ advanceFeaturesContainer.addEventListener('click', (e) => {
             advancedSettings.customizationCancelled(selectedElement, '.defaultOn');
         } else if (selectedElement.matches('.defaultOff-cancel')) {
             advancedSettings.customizationCancelled(selectedElement, '.defaultOff');
+        }
+    }
+});
+
+// general light switch
+nav.addEventListener('click', (e) => {
+    const selectedElement = e.target;
+    if (selectedElement.closest('.general-light-switch')) {
+        if (!isWifiActive) {
+            lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle all lights.', 'beforeend', document.querySelector('body'));
+            return;
+        }
+        const bulbImage = generalLightSwitch.querySelector('img');
+        const allLightsOn = Object.values(lightController.componentsData).every(room => room.isLightOn);
+        
+        if (allLightsOn) {
+            // Turn all lights off
+            lightController.toggleAllLights(false);
+            lightController.lightSwitchOff(bulbImage);
+            lightController.displayNotification('All lights turned off', 'beforeend', document.querySelector('body'));
+        } else {
+            // Turn on only lights that are off
+            const anyLightWasOff = lightController.toggleAllLights(true);
+            lightController.lightSwitchOn(bulbImage);
+            if (anyLightWasOff) {
+                lightController.displayNotification('All lights turned on', 'beforeend', document.querySelector('body'));
+            }
         }
     }
 });
