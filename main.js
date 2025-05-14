@@ -37,8 +37,16 @@ mainRoomsContainer.addEventListener('click', (e) => {
 
     // when click occurs on light switch
     if (selectedElement.closest(".light-switch")) {
+        if (!isWifiActive) {
+            const notificationContainer = document.querySelector('body');
+            lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle lights.', 'beforeend', notificationContainer);
+            return;
+        }
         const lightSwitch = selectedElement.closest(".basic_settings_buttons").firstElementChild;
         lightController.toggleLightSwitch(lightSwitch);
+        const roomName = lightController.getSelectedComponentName(lightSwitch);
+        const message = `Light ${lightController.getComponent(roomName).isLightOn ? 'turned on' : 'turned off'} in ${roomName}`;
+        lightController.displayNotification(message, 'beforeend', document.querySelector('body'));
         return;
     }
 
@@ -50,15 +58,15 @@ mainRoomsContainer.addEventListener('click', (e) => {
 });
 
 mainRoomsContainer.addEventListener('input', (e) => {
-    const sliders = e.target;
-    if (sliders.matches('#light_intensity')) {
+    const slider = e.target;
+    if (slider.matches('#light_intensity')) {
         if (!isWifiActive) {
             const notificationContainer = document.querySelector('body');
             lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to adjust lights.', 'beforeend', notificationContainer);
             return;
         }
-        const value = parseInt(sliders.value, 10);
-        lightController.handleLightIntensitySlider(sliders, value);
+        const value = parseInt(slider.value, 10);
+        lightController.handleLightIntensitySlider(slider, value);
     }
 });
 

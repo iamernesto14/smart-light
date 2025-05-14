@@ -53,13 +53,14 @@ class Light extends General {
         const { componentData: component, childElement, background } = this.lightComponentSelectors(lightButtonElement);
         const slider = this.closestSelector(lightButtonElement, '.rooms', '#light_intensity');
 
-        if (!component) return;
+        if (!component || !childElement || !background || !slider) return;
 
         component.isLightOn = !component.isLightOn;
 
         if (component.isLightOn) {
             this.lightSwitchOn(childElement);
-            component.lightIntensity = 5;
+            // Preserve last non-zero intensity, default to 5 if 0
+            component.lightIntensity = component.lightIntensity > 0 ? component.lightIntensity : 5;
             const lightIntensity = component.lightIntensity / 10;
             this.handleLightIntensity(background, lightIntensity);
             slider.value = component.lightIntensity;

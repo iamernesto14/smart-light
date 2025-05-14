@@ -30,9 +30,14 @@ class General {
     }
 
     getSelectedComponentName(element, ancestorIdentifier='.rooms', elementSelector='p') {
-        const selectedlimination = this.closestSelector(element, ancestorIdentifier, elementSelector);
-        const name = selectedlimination.textContent.toLowerCase();
-        return name;
+        const selectedElement = this.closestSelector(element, ancestorIdentifier, elementSelector);
+        if (!selectedElement) return null;
+        const name = selectedElement.textContent.toLowerCase();
+        // Handle multi-word room names
+        const normalizedName = ['outdoor lights', 'guest room', 'walkway & corridor'].includes(name)
+            ? name
+            : name.replace(/\s+/, '');
+        return normalizedName;
     }
 
     getComponentData(element, ancestorIdentifier, childElement) {
