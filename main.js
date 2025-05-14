@@ -19,6 +19,7 @@ const advancedSettings = new AdvanceSettings();
 // global variables
 let selectedComponent;
 let isWifiActive = true;
+window.isWifiActive = isWifiActive; // Expose for basicSettings.js
 
 // Event handlers
 // hide homepage after button is clicked
@@ -85,11 +86,21 @@ advanceFeaturesContainer.addEventListener('click', (e) => {
 
     // set light on time customization
     if (selectedElement.matches('.defaultOn-okay')) {
+        if (!isWifiActive) {
+            const notificationContainer = document.querySelector('body');
+            advancedSettings.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to set automated times.', 'beforeend', notificationContainer);
+            return;
+        }
         advancedSettings.customizeAutomaticOnPreset(selectedElement);
     }
     
     // set light off time customization
     if (selectedElement.matches('.defaultOff-okay')) {
+        if (!isWifiActive) {
+            const notificationContainer = document.querySelector('body');
+            advancedSettings.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to set automated times.', 'beforeend', notificationContainer);
+            return;
+        }
         advancedSettings.customizeAutomaticOffPreset(selectedElement);
     }
 

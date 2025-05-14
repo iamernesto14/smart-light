@@ -75,11 +75,17 @@ class Light extends General {
         return { room, componentData, childElement, background };
     }
 
-    toggleLightSwitch(lightButtonElement) {
+    toggleLightSwitch(lightButtonElement, timeStr = false) {
         const { componentData: component, childElement, background } = this.lightComponentSelectors(lightButtonElement);
         const slider = this.closestSelector(lightButtonElement, '.rooms', '#light_intensity');
 
         if (!component || !childElement || !background || !slider) return;
+
+        // Check Wi-Fi for non-automated toggles
+        if (!timeStr && !window.isWifiActive) {
+            this.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to toggle lights.', 'beforeend', document.querySelector('body'));
+            return;
+        }
 
         component.isLightOn = !component.isLightOn;
 
@@ -95,6 +101,13 @@ class Light extends General {
             this.handleLightIntensity(background, 0);
             slider.value = 0;
         }
+
+        // Display notification
+        const action = component.isLightOn ? 'turned on' : 'turned off';
+        const message = timeStr
+            ? `Light ${action} automatically in ${component.name} at ${timeStr}`
+            : `Light ${action} in ${component.name}`;
+        this.displayNotification(message, 'beforeend', document.querySelector('body'));
     }
 
     handleLightIntensitySlider(element, intensity) {
