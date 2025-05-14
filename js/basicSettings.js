@@ -12,9 +12,10 @@ class Light extends General {
         return `
             <div class="notification">
                 <div>
-                    <img src="./assets/svgs/checked.svg" alt="checked svg icon on notifications" >
+                    <img src="./assets/svgs/checked.svg" alt="checked svg icon on notifications">
                 </div>
                 <p>${message}</p>
+                <button class="notification-close">✕</button>
             </div>
         `;
     }
@@ -38,6 +39,16 @@ class Light extends General {
         const html = this.notification(message);
         this.renderHTML(html, position, container);
         const notificationElement = container.querySelector('.notification:last-child');
+        const closeButton = notificationElement.querySelector('.notification-close');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                notificationElement.remove();
+                if (this.notificationTimer) {
+                    clearTimeout(this.notificationTimer);
+                    this.notificationTimer = null;
+                }
+            });
+        }
         this.notificationTimer = setTimeout(() => {
             notificationElement.remove();
             this.notificationTimer = null;

@@ -241,7 +241,10 @@ class AdvanceSettings extends Light {
                 ) {
                     if (component['element'] && document.contains(component['element'])) {
                         const timeStr = `${time.getHours().toString().padStart(2, '0')}:${time.getMinutes().toString().padStart(2, '0')}`;
-                        resolve(this.toggleLightSwitch(component['element'], timeStr));
+                        this.toggleLightSwitch(component['element'], timeStr);
+                        const action = component.isLightOn ? 'turned on' : 'turned off';
+                        this.displayNotification(`Light ${action} in ${component.name} by automation`, 'beforeend', document.querySelector('body'));
+                        resolve();
                     } else {
                         reject(new Error(`Light switch element for ${component.name} is invalid`));
                     }
@@ -275,5 +278,4 @@ class AdvanceSettings extends Light {
         this.timers[component.name][isAutoOn ? 'autoOn' : 'autoOff'] = intervalId;
     }
 }
-
 export default AdvanceSettings;
