@@ -9,6 +9,8 @@ const nav = document.querySelector('nav');
 const loader = document.querySelector('.loader-container');
 const generalLightSwitch = document.querySelector('.general-light-switch');
 const wifiToggle = document.querySelector('.wifi-toggle');
+const wifiNotification = document.querySelector('.wifi_notification');
+const wifiConnectionListContainer = document.querySelector('.wifi_connection_list_container');
 
 // imports
 import Light from './js/basicSettings.js';
@@ -22,6 +24,46 @@ const advancedSettings = new AdvanceSettings();
 let selectedComponent;
 let isWifiActive = true;
 window.isWifiActive = isWifiActive; // Expose for basicSettings.js
+
+// Wi-Fi connection data
+const wifiNetworks = [
+    'HomeWiFi', 'GuestNet', 'OfficeWiFi', 'CafeConnect', 'PublicWiFi',
+    'NeighborNet', 'SecureHub', 'FastLink', 'FamilyWiFi', 'OpenNet'
+];
+const signalIcons = [
+    './assets/svgs/wifi_signal_excellent.svg',
+    './assets/svgs/wifi_signal_good.svg',
+    './assets/svgs/wifi_signal_poor.svg'
+];
+
+// Function to generate random Wi-Fi networks
+function generateRandomNetworks() {
+    if (!isWifiActive) {
+        wifiConnectionListContainer.innerHTML = '';
+        return;
+    }
+    const numNetworks = Math.floor(Math.random() * 4) + 2; // 2–5 networks
+    const shuffledNetworks = wifiNetworks.sort(() => 0.5 - Math.random());
+    const selectedNetworks = shuffledNetworks.slice(0, numNetworks);
+    
+    wifiConnectionListContainer.innerHTML = '';
+    selectedNetworks.forEach(network => {
+        const signalIcon = signalIcons[Math.floor(Math.random() * signalIcons.length)];
+        const isProtected = Math.random() > 0.3; // 70% chance of being protected
+        const networkItem = `
+            <div class="wifi_connections_list">
+                <p>${network}</p>
+                <div class="wifi-icons">
+                    <img src="${signalIcon}" alt="signal strength">
+                    ${isProtected ? '<img src="./assets/svgs/wifi_protected.svg" alt="protected">' : ''}
+                </div>
+            </div>
+        `;
+        wifiConnectionListContainer.insertAdjacentHTML('beforeend', networkItem);
+    });
+    
+    lightController.displayNotification('Wi-Fi network list updated', 'beforeend', document.querySelector('body'));
+}
 
 // Event handlers
 // hide homepage after button is clicked
@@ -115,7 +157,7 @@ advanceFeaturesContainer.addEventListener('click', (e) => {
     }
 });
 
-// general light switch
+// general light switch and Wi-Fi toggle
 nav.addEventListener('click', (e) => {
     const selectedElement = e.target;
     if (selectedElement.closest('.general-light-switch')) {
@@ -146,18 +188,41 @@ nav.addEventListener('click', (e) => {
         const wifiImage = wifiToggle.querySelector('img');
         isWifiActive = !isWifiActive;
         window.isWifiActive = isWifiActive;
-        const wifiNotification = document.querySelector('.wifi_notification p');
+        const wifiNotificationText = document.querySelector('.wifi_notification p');
         if (isWifiActive) {
             wifiImage.src = './assets/svgs/wifi.svg';
             wifiImage.setAttribute('data-wifiOff', './assets/svgs/wifi-disconnected.svg');
-            wifiNotification.textContent = 'Wi-Fi is on';
+            wifiNotificationText.textContent = 'Wi-Fi is on';
             lightController.displayNotification('Wi-Fi turned on', 'beforeend', document.querySelector('body'));
+            generateRandomNetworks(); 
         } else {
             wifiImage.src = './assets/svgs/wifi-disconnected.svg';
             wifiImage.setAttribute('data-wifiOff', './assets/svgs/wifi.svg');
-            wifiNotification.textContent = 'Wi-Fi is off';
+            wifiNotificationText.textContent = 'Wi-Fi is off';
             lightController.displayNotification('Wi-Fi turned off', 'beforeend', document.querySelector('body'));
+            wifiConnectionListContainer.innerHTML = ''; 
+            lightController.addHidden(wifiConnectionListContainer);
         }
         document.querySelector('.wifi_notification img').src = isWifiActive ? './assets/svgs/wifi.svg' : './assets/svgs/wifi-disconnected.svg';
     }
 });
+
+// Wi-Fi notification
+wifiNotification.addEventListener('click', () => {
+    if (!isWifiActive) {
+        lightController.displayNotification('Wi-Fi is inactive. Please enable Wi-Fi to view networks.', 'beforeend', document.querySelector('body'));
+        return;
+    }
+    if (wifiConnectionListContainer.classList.contains('hidden')) {
+        lightController.removeHidden(wifiConnectionListContainer);
+        generateRandomNetworks();
+    } else {
+        lightController.addHidden(wifiConnectionListContainer);
+    }
+});
+
+setInterval(() => {
+    if (isWifiActive && !wifiConnectionListContainer.classList.contains('hidden')) {
+        generateRandomNetworks();
+    }
+}, 5 * 60 * 1000); 

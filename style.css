@@ -405,59 +405,65 @@ h4 {
 }
 .wifi-container {
     position: fixed;
-    width: fit-content;
-    right: 20px;
-    bottom: 20px;
-    border-radius: 20px;
-    border: 3px solid #00a3;
+    width: 200px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 15px;
+    border: 2px solid #00a3;
     background: #00a;
     overflow: hidden;
     cursor: pointer;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 10px;
 }
 .wifi_notification {
     width: 100%;
-
-    padding: 0 1rem;
+    padding: 0.5rem 0.8rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
-
+    gap: 10px;
+}
+.wifi_notification p {
+    font-size: 0.9rem;
 }
 .wifi_connection_list_container {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     width: 100%;
-    /* padding: 1rem; */
-    gap: 10px;
+    max-height: 150px;
+    overflow-y: auto;
+    gap: 5px;
 }
 .wifi_connections_list {
-    padding: .4rem 1rem;
-    font-weight: 500;
-
+    padding: 0.3rem 0.8rem;
+    font-size: 0.85rem;
+    font-weight: 400;
     display: flex;
     justify-content: space-between;
-    
+    align-items: center;
 }
-.wifi_connections_list > img {
-    width: 20px;
-    aspect-ratio: 1;
-
-}
-
-/* .wifi-container:hover p {
-    display: block;
-} */
-.wifi_connection_list_container p:hover {
+.wifi_connections_list:hover {
     background: #018;
-    
+}
+.wifi_connections_list > p {
+    flex: 1;
+    margin-right: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.wifi-icons {
+    display: flex;
+    gap: 4px;
+}
+.wifi-icons > img {
+    width: 16px;
+    height: 16px;
 }
 
 
