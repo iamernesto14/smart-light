@@ -42,7 +42,7 @@ class Light extends General {
       this.notificationTimer = setTimeout(() => {
         existingNotification.remove();
         this.notificationTimer = null;
-      }, 5000);
+      }, 5000) as unknown as number;
       return;
     }
     const html = this.notification(message);
@@ -61,7 +61,7 @@ class Light extends General {
     this.notificationTimer = setTimeout(() => {
       notificationElement.remove();
       this.notificationTimer = null;
-    }, 5000);
+    }, 5000) as unknown as number;
   }
 
   removeNotification(element: HTMLElement): void {
