@@ -1,6 +1,6 @@
 'use strict';
 
-import General from './general.js';
+import General from './general';
 import { ComponentData } from './types';
 
 declare global {
