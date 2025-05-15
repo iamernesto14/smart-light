@@ -6,7 +6,7 @@
     <title>Smart Home Component | Smart Light</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-    <script type="module" src="main.js"></script>
+    <script type="module" src="./dist/main.js"></script>
 </head>
 <body>
     <!-- homepage ui -->
@@ -24,15 +24,15 @@
 
     <!-- application ui -->
      <nav class=" hidden ">
-         <button class="network-container">
-             <img src="./assets/svgs/wifi.svg" alt="wifi svg icon">
+        <button class="wifi-toggle">
+            <img src="./assets/svgs/wifi-disconnected.svg" alt="wifi toggle" data-wifiOff="./assets/svgs/wifi_off.svg">
         </button>
-        <button class="general_light_switch">
-            <img src="./assets/svgs/light_bulb.svg" alt="light svg icon">
-        </button>
-        <!-- <section>
+        <button class="general-light-switch">
+                <img src="./assets/svgs/light_bulb_off.svg" alt="general light switch" data-lightOn="./assets/svgs/light_bulb.svg">
+            </button>
+        <section>
             <p>JAY</p>
-        </section> -->
+        </section>
      </nav>
      <section class="application_container  hidden ">
         <div class="flex1">
@@ -179,17 +179,17 @@
         </div>
 
              <!-- wifi -->
-      <div class="wifi-container ">
-        <section class="wifi_connection_list_container hidden">
+      <section class="wifi-container">
+    <section class="wifi_notification">
+        <p>Wifi is currently not available</p>
+        <section class="img_svg-container">
+            <img src="./assets/svgs/wifi-disconnected.svg" alt="wifi status">
         </section>
-        <section class="wifi_notification">
-            <p class="hidden not_available">Wifi is currently not available</p>
-            <!-- <p class="hidden available">Wifi connections available</p> -->
-            <div class="img_svg-container">
-                <img src="./assets/svgs/wifi.svg" alt="disconnected wifi svg logo" data-altWifiImg="./assets/svgs/wifi-disconnected.svg">
-            </div>
-        </section>
-      </div>
+    </section>
+    <section class="wifi_connection_list_container hidden">
+        <!-- Wi-Fi connection list will be dynamically inserted here -->
+    </section>
+</section>
 
         
      </section>
