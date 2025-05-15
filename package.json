@@ -1,0 +1,27 @@
+{
+  "name": "smart-light",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamernesto14/smart-light.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamernesto14/smart-light/issues"
+  },
+  "homepage": "https://github.com/iamernesto14/smart-light#readme",
+  "description": "",
+  "devDependencies": {
+    "@types/chart.js": "^2.9.41",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.9"
+  }
+}
